@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Inventory System</title>
+</head>
+<body>
+  <h1>Product Inventory & Analytics</h1>
+  <p>Open the browser Console to view the report.</p>
+
+  <script>
+    console.log("--- Initializing Inventory System ---");
+
+    // 1. Initial inventory
+    const inventory = [
+      { name: "Laptop", price: 800 },
+      { name: "Mouse", price: 25 }
+    ];
+
+    // 2. Function to assign category
+    function getCategory(price) {
+      if (price < 50) {
+        return "Budget";
+      } else if (price < 200) {
+        return "Standard";
+      } else {
+        return "Premium";
+      }
+    }
+
+    // 3. Take input from user
+    const productName = prompt("Enter product name:");
+    const productPrice = Number(prompt("Enter product price:"));
+
+    if (
+      productName === null ||
+      productName.trim() === "" ||
+      !Number.isFinite(productPrice) ||
+      productPrice <= 0
+    ) {
+      console.log("Invalid input. Please enter a product name and a positive price.");
+    } else {
+      // 4. Add new product
+      inventory.push({
+        name: productName.trim(),
+        price: productPrice
+      });
+
+      console.log(
+        `[Prompt executed: User adds "${productName.trim()}" at "$${productPrice}"]`
+      );
+
+      // 5. Display all products using forEach
+      console.log("\n--- Processing Inventory Roster (forEach) ---");
+
+      inventory.forEach(function(product) {
+        const category = getCategory(product.price);
+
+        console.log(
+          `* Item: ${product.name} ($${product.price}) -> Category: ${category}`
+        );
+      });
+
+      // 6. Calculate total inventory value
+      const calculateTotal = (items) => {
+        let total = 0;
+
+        for (const item of items) {
+          total += item.price;
+        }
+
+        return total;
+      };
+
+      const totalValue = calculateTotal(inventory);
+
+      // 7. Filter affordable products
+      const affordableProducts = inventory.filter(function(product) {
+        return product.price < 200;
+      });
+
+      // 8. Create formatted report using map
+      const report = inventory.map(function(product) {
+        return `${product.name.toUpperCase()}: $${product.price}`;
+      });
+
+      // 9. Print analytics
+      console.log("\n--- Financial Analytics ---");
+
+      console.log(`Total Inventory Value: $${totalValue}`);
+
+      console.log(
+        "Filtered Affordable Items (Under $200):",
+        JSON.stringify(affordableProducts.map(item => item.name))
+      );
+
+      console.log("Formatted Report List:", JSON.stringify(report));
+    }
+  </script>
+</body>
+</html>
